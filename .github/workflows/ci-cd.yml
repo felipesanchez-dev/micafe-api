@@ -26,25 +26,22 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: npm
-          cache-dependency-path: ./server/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
-        working-directory: ./server
         run: npm ci
 
       - name: Run linter
-        working-directory: ./server
         run: npm run lint
 
       - name: Run tests
-        working-directory: ./server
         run: npm run test:coverage
 
       - name: Upload coverage to Codecov
         if: matrix.node-version == '18.x'
         uses: codecov/codecov-action@v3
         with:
-          directory: ./server/coverage
+          directory: coverage
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: false
@@ -62,21 +59,19 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-          cache-dependency-path: ./server/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
-        working-directory: ./server
         run: npm ci
 
       - name: Build application
-        working-directory: ./server
         run: npm run build
 
       - name: Archive build artifacts
         uses: actions/upload-artifact@v3
         with:
           name: dist-files
-          path: server/dist/
+          path: dist/
           retention-days: 5
 
   docker-build:
@@ -101,7 +96,7 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./server
+          context: .
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
           tags: |
@@ -123,14 +118,12 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-          cache-dependency-path: ./server/package-lock.json
+          cache-dependency-path: package-lock.json
 
       - name: Install dependencies
-        working-directory: ./server
         run: npm ci
 
       - name: Run security audit
-        working-directory: ./server
         run: npm audit --audit-level=high
 
       - name: Run Snyk to check for vulnerabilities
@@ -139,4 +132,4 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --file=server/package.json --severity-threshold=high
+          args: --file=package.json --severity-threshold=high
