@@ -1,23 +1,15 @@
 {
   "version": 2,
-  "name": "micafe-api",
   "builds": [
     {
-      "src": "dist/api/index.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["dist/**"],
-        "maxLambdaSize": "50mb"
-      }
+      "src": "src/index.ts",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/.*",
-      "dest": "dist/api/index.js"
+      "src": "/(.*)",
+      "dest": "src/index.ts"
     }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }
