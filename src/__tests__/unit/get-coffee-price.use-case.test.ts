@@ -131,4 +131,67 @@ describe("GetCoffeePriceUseCase", () => {
       );
     });
   });
+
+  describe("Error handling", () => {
+    it("should throw ScrapingError when repository fails", async () => {
+      const failingRepository = new MockCoffeePriceRepository(true);
+      const useCase = new GetCoffeePriceUseCase(
+        failingRepository,
+        mockCache,
+        mockLogger
+      );
+
+      await expect(useCase.execute()).rejects.toThrow(ScrapingError);
+      await expect(useCase.execute()).rejects.toThrow(
+        "No fue posible obtener el precio del café"
+      );
+    });
+
+    it("should handle empty or invalid data from repository", async () => {
+      const emptyDataRepository: CoffeePriceRepository = {
+        async scrapeCoffeePrice() {
+          return {
+            precioInternoReferencia: "",
+            precioInternoFecha: "",
+            bolsaNY: "",
+            bolsaFecha: "",
+            tasaCambio: "",
+            tasaFecha: "",
+            mecic: "",
+            mecicFecha: "",
+          };
+        },
+      };
+
+      const useCase = new GetCoffeePriceUseCase(
+        emptyDataRepository,
+        mockCache,
+        mockLogger
+      );
+
+      const result = await useCase.execute();
+
+      expect(result).toBeDefined();
+      expect(result.precioInternoReferencia.valor).toBe(0);
+    });
+
+    it("should handle repository throwing generic error", async () => {
+      const errorRepository: CoffeePriceRepository = {
+        async scrapeCoffeePrice() {
+          throw new Error("Network timeout");
+        },
+      };
+
+      const useCase = new GetCoffeePriceUseCase(
+        errorRepository,
+        mockCache,
+        mockLogger
+      );
+
+      await expect(useCase.execute()).rejects.toThrow(ScrapingError);
+      await expect(useCase.execute()).rejects.toThrow(
+        "No fue posible obtener el precio del café"
+      );
+    });
+  });
 });
