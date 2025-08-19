@@ -3,7 +3,6 @@ src
 coverage
 .git
 .gitignore
-.env
 .env.example
 README.md
 jest.config.js
