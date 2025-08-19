@@ -6,7 +6,8 @@
       "src": "dist/api/index.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["dist/**"]
+        "includeFiles": ["dist/**"],
+        "maxLambdaSize": "50mb"
       }
     }
   ],
@@ -18,10 +19,5 @@
   ],
   "env": {
     "NODE_ENV": "production"
-  },
-  "functions": {
-    "dist/api/index.js": {
-      "maxDuration": 30
-    }
   }
 }
