@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/felipesanchez-dev/micafe-api/main/docs/assets/hero-banner.png" alt="MiCafe API Banner" width="100%"/>
+<img src="https://raw.githubusercontent.com/felipesanchez-dev/micafe-api/refs/heads/main/src/image/logo-api.png" alt="MiCafe API Banner" width="100%"/>
 
 [![Build Status](https://github.com/felipesanchez-dev/micafe-api/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/felipesanchez-dev/micafe-api/actions/workflows/ci-cd.yml)
 [![Coverage](https://img.shields.io/badge/coverage-82.6%25-brightgreen.svg)](https://github.com/felipesanchez-dev/micafe-api)
@@ -13,7 +13,7 @@
 
 **Real-time Colombian Coffee Price API built with Clean Architecture**
 
-*Developed with by [Juan Felipe Reyes Sánchez](https://github.com/felipesanchez-dev)*
+_Developed with by [Juan Felipe Reyes Sánchez](https://github.com/felipesanchez-dev)_
 
 [🚀 **Live Demo**](#) • [📖 **API Docs**](#) • [🐛 **Report Bug**](https://github.com/felipesanchez-dev/micafe-api/issues) • [✨ **Request Feature**](https://github.com/felipesanchez-dev/micafe-api/issues)
 
@@ -63,40 +63,40 @@ graph TB
     subgraph "🌐 External Layer"
         EXT[External Services<br/>Federación de Cafeteros<br/>HTTP Clients]
     end
-    
+
     subgraph "🎯 Interface Layer"
         REST[REST Controllers]
         MW[Middleware]
         RT[Routes]
         DTO[DTOs]
     end
-    
+
     subgraph "🏗️ Infrastructure Layer"
         REPO[Repositories<br/>Implementation]
         CACHE[Cache Service]
         LOG[Logger Service]
         HTTP[HTTP Client]
     end
-    
+
     subgraph "🚀 Application Layer"
         UC[Use Cases]
         SRV[Application Services]
     end
-    
+
     subgraph "💎 Domain Layer"
         ENT[Entities]
         INT[Interfaces]
         ERR[Domain Errors]
         VAL[Value Objects]
     end
-    
+
     EXT --> REST
     REST --> UC
     UC --> REPO
     UC --> CACHE
     REPO --> EXT
-    
-    
+
+
     class ENT,INT,ERR,VAL domain
     class UC,SRV application
     class REPO,CACHE,LOG,HTTP infrastructure
@@ -121,14 +121,8 @@ flowchart TD
     G --> C
     C --> B
     B --> I[🌐 HTTP Response]
-    
-    classDef request fill:#FF6B6B,stroke:#333,stroke-width:2px
-    classDef controller fill:#4ECDC4,stroke:#333,stroke-width:2px
-    classDef usecase fill:#45B7D1,stroke:#333,stroke-width:2px
-    classDef repository fill:#96CEB4,stroke:#333,stroke-width:2px
-    classDef domain fill:#FFEAA7,stroke:#333,stroke-width:2px
-    classDef response fill:#DDA0DD,stroke:#333,stroke-width:2px
-    
+
+
     class A,I request
     class B controller
     class C usecase
@@ -143,28 +137,26 @@ flowchart TD
 
 <div align="center">
 
-### **Backend Core**
 ![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.4-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
 ![Express](https://img.shields.io/badge/Express-4.19-000000?style=for-the-badge&logo=express&logoColor=white)
 
 ### **Data & Scraping**
+
 ![Cheerio](https://img.shields.io/badge/Cheerio-1.0-FF6B6B?style=for-the-badge&logo=jquery&logoColor=white)
 ![Axios](https://img.shields.io/badge/Axios-1.6-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
 
 ### **Testing & Quality**
+
 ![Jest](https://img.shields.io/badge/Jest-29.7-C21325?style=for-the-badge&logo=jest&logoColor=white)
 ![ESLint](https://img.shields.io/badge/ESLint-8.57-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)
 ![Supertest](https://img.shields.io/badge/Supertest-6.0-FF6B6B?style=for-the-badge&logo=jest&logoColor=white)
 
 ### **DevOps & Deployment**
+
 ![Docker](https://img.shields.io/badge/Docker-Multi--stage-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-CI/CD-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
 ![Nginx](https://img.shields.io/badge/Nginx-Reverse_Proxy-009639?style=for-the-badge&logo=nginx&logoColor=white)
-
-### **Documentation**
-![Swagger](https://img.shields.io/badge/Swagger-OpenAPI_3.0-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
-![Mermaid](https://img.shields.io/badge/Mermaid-Diagrams-FF3670?style=for-the-badge&logo=mermaid&logoColor=white)
 
 </div>
 
@@ -183,10 +175,10 @@ sequenceDiagram
     participant R as 🏗️ Repository
     participant EXT as 🌐 Federación API
     participant N as 💎 Normalizer
-    
+
     U->>C: GET /precio-hoy
     C->>UC: getCoffeePriceToday()
-    
+
     UC->>Cache: get("coffee_price_today")
     alt Cache Hit
         Cache-->>UC: Cached Data ✅
@@ -194,7 +186,7 @@ sequenceDiagram
     else Cache Miss
         UC->>R: scrapeCoffeePrice()
         R->>EXT: HTTP GET Request
-        
+
         alt Success
             EXT-->>R: HTML Response
             R-->>UC: Scraped Raw Data
@@ -211,7 +203,7 @@ sequenceDiagram
             end
         end
     end
-    
+
     C-->>U: JSON Response
 ```
 
@@ -220,32 +212,32 @@ sequenceDiagram
 ```mermaid
 flowchart TD
     A[🚀 API Request] --> B{🛡️ Try Scraping}
-    
+
     B -->|Success| C[✅ Parse HTML]
     B -->|Network Error| D[⏳ Retry Logic]
     B -->|Timeout| D
-    
+
     D --> E{🔄 Attempts < 3?}
     E -->|Yes| F[⏱️ Wait 1s]
     F --> B
     E -->|No| G[❌ Network Error]
-    
+
     C --> H{📊 Valid Data?}
     H -->|Yes| I[🔄 Normalize Data]
     H -->|No| J[❌ Scraping Error]
-    
+
     I --> K[💾 Cache Result]
     K --> L[✅ Success Response]
-    
+
     G --> M[📝 Log Error]
     J --> M
     M --> N[❌ Error Response]
-    
+
     classDef success fill:#2ECC71,stroke:#27AE60,stroke-width:2px,color:#fff
     classDef error fill:#E74C3C,stroke:#C0392B,stroke-width:2px,color:#fff
     classDef process fill:#3498DB,stroke:#2980B9,stroke-width:2px,color:#fff
     classDef decision fill:#F39C12,stroke:#E67E22,stroke-width:2px,color:#fff
-    
+
     class L success
     class G,J,N error
     class C,D,F,I,K,M process
@@ -264,24 +256,24 @@ The API scrapes real-time data from the official **Federación Nacional de Cafet
 <div class="col-12 lista-container">
   <ul class="lista">
     <li class="title"><strong>INDICADORES:</strong></li>
-    
+
     <li tabindex="1">
       <span class="name">Precio interno de referencia:</span>
       <strong>$2.780.000</strong>
       <span class="detail hidden">
-        <strong>Fecha:</strong> 2025-08-18<br>
+        <strong>Fecha:</strong> 2025-08-18<br />
         <a href="https://federaciondecafeteros.org/.../precio_cafe.pdf">PDF</a>
       </span>
     </li>
-    
+
     <li tabindex="2">
       <span class="name">Bolsa de NY:</span>
       <strong>343,60</strong>
       <span class="detail hidden">
-        <strong>Fecha:</strong> 2025-08-18<br>
+        <strong>Fecha:</strong> 2025-08-18<br />
       </span>
     </li>
-    
+
     <!-- Additional indicators... -->
   </ul>
 </div>
@@ -297,22 +289,18 @@ flowchart LR
     D --> E[🔢 Parse Numbers]
     E --> F[📅 Format Dates]
     F --> G[📊 Structured JSON]
-    
+
     subgraph "Normalization Rules"
         H["$2.780.000 → 2780000"]
         I["343,60 → 343.60"]
         J["2025-08-18 → ISO Date"]
     end
-    
+
     D -.-> H
     E -.-> I
     F -.-> J
-    
-    classDef input fill:#FF6B6B,stroke:#333,stroke-width:2px
-    classDef process fill:#4ECDC4,stroke:#333,stroke-width:2px
-    classDef output fill:#45B7D1,stroke:#333,stroke-width:2px
-    classDef rule fill:#FFEAA7,stroke:#333,stroke-width:1px
-    
+
+
     class A input
     class B,C,D,E,F process
     class G output
@@ -324,27 +312,27 @@ flowchart LR
 ```typescript
 interface CoffeePriceIndicator {
   precioInternoReferencia: {
-    valor: number;        // 2780000 (COP, integer)
-    moneda: string;       // "COP"
-    fecha: string;        // "2025-08-18" (ISO date)
+    valor: number; // 2780000 (COP, integer)
+    moneda: string; // "COP"
+    fecha: string; // "2025-08-18" (ISO date)
   };
   bolsaNY: {
-    valor: number;        // 343.60 (decimal)
-    unidad: string;       // "cents/lb"
-    fecha: string;        // "2025-08-18"
+    valor: number; // 343.60 (decimal)
+    unidad: string; // "cents/lb"
+    fecha: string; // "2025-08-18"
   };
   tasaCambio: {
-    valor: number;        // 4015 (integer)
-    moneda: string;       // "COP/USD"
-    fecha: string;        // "2025-08-18"
+    valor: number; // 4015 (integer)
+    moneda: string; // "COP/USD"
+    fecha: string; // "2025-08-18"
   };
   mecic: {
-    valor: number;        // 0 (integer)
-    fecha: string;        // "2024-07-12"
+    valor: number; // 0 (integer)
+    fecha: string; // "2024-07-12"
   };
   fuente: {
-    url: string;          // "https://federaciondecafeteros.org"
-    pdfPrecio?: string;   // PDF link if available
+    url: string; // "https://federaciondecafeteros.org"
+    pdfPrecio?: string; // PDF link if available
   };
 }
 ```
@@ -354,6 +342,7 @@ interface CoffeePriceIndicator {
 ## 🛠️ API Reference
 
 ### **Base URL**
+
 ```
 Production:  https://micafe-api.herokuapp.com
 Development: http://localhost:3000
@@ -361,18 +350,19 @@ Development: http://localhost:3000
 
 ### **Endpoints Overview**
 
-| Endpoint | Method | Description | Response Time | Cache |
-|----------|--------|-------------|---------------|--------|
-| `/` | GET | API metadata and service info | ~50ms | No |
-| `/status` | GET | Health check and system stats | ~30ms | No |
-| `/precio-hoy` | GET | Real-time coffee prices | ~2-5s | 5min TTL |
-| `/docs` | GET | Interactive API documentation | ~100ms | No |
+| Endpoint      | Method | Description                   | Response Time | Cache    |
+| ------------- | ------ | ----------------------------- | ------------- | -------- |
+| `/`           | GET    | API metadata and service info | ~50ms         | No       |
+| `/status`     | GET    | Health check and system stats | ~30ms         | No       |
+| `/precio-hoy` | GET    | Real-time coffee prices       | ~2-5s         | 5min TTL |
+| `/docs`       | GET    | Interactive API documentation | ~100ms        | No       |
 
 ### **📋 GET /** - Service Information
 
 Returns comprehensive metadata about the API service.
 
 **Response Example:**
+
 ```json
 {
   "name": "MiCafe API",
@@ -396,6 +386,7 @@ Returns comprehensive metadata about the API service.
 Provides real-time system health and performance metrics.
 
 **Response Example:**
+
 ```json
 {
   "status": "healthy",
@@ -414,6 +405,7 @@ Provides real-time system health and performance metrics.
 Retrieves current Colombian coffee price indicators in real-time.
 
 **Success Response (200):**
+
 ```json
 {
   "success": true,
@@ -425,7 +417,7 @@ Retrieves current Colombian coffee price indicators in real-time.
       "fecha": "2025-08-18"
     },
     "bolsaNY": {
-      "valor": 343.60,
+      "valor": 343.6,
       "unidad": "cents/lb",
       "fecha": "2025-08-18"
     },
@@ -451,6 +443,7 @@ Retrieves current Colombian coffee price indicators in real-time.
 ```
 
 **Error Response (500/503):**
+
 ```json
 {
   "success": false,
@@ -468,13 +461,13 @@ Retrieves current Colombian coffee price indicators in real-time.
 
 ### **📚 Error Codes Reference**
 
-| Code | HTTP Status | Description | Retry Recommended |
-|------|-------------|-------------|-------------------|
-| `SCRAPE_FAILED` | 500 | General scraping error | ✅ Yes |
-| `NETWORK_ERROR` | 503 | Network connectivity issues | ✅ Yes |
-| `VALIDATION_ERROR` | 400 | Invalid request data | ❌ No |
-| `NOT_FOUND` | 404 | Endpoint not found | ❌ No |
-| `INTERNAL_ERROR` | 500 | Unexpected server error | ✅ Yes |
+| Code               | HTTP Status | Description                 | Retry Recommended |
+| ------------------ | ----------- | --------------------------- | ----------------- |
+| `SCRAPE_FAILED`    | 500         | General scraping error      | ✅ Yes            |
+| `NETWORK_ERROR`    | 503         | Network connectivity issues | ✅ Yes            |
+| `VALIDATION_ERROR` | 400         | Invalid request data        | ❌ No             |
+| `NOT_FOUND`        | 404         | Endpoint not found          | ❌ No             |
+| `INTERNAL_ERROR`   | 500         | Unexpected server error     | ✅ Yes            |
 
 ---
 
@@ -532,11 +525,31 @@ Our comprehensive testing strategy ensures reliability and maintainability:
 ### **Test Pyramid**
 
 ```mermaid
-pyramid
-    title Test Strategy Pyramid
-    top "🔺 E2E Tests (4 tests)"
-    middle "🔹 Integration Tests (8 tests)"
-    bottom "🔸 Unit Tests (10 tests)"
+graph TB
+    subgraph " "
+        E2E["🔺 E2E Tests<br/>(4 tests)<br/>API Endpoints & Integration"]
+    end
+
+    subgraph "  "
+        INT1["🔹 Integration Tests"]
+        INT2["(8 tests)"]
+        INT3["Repository & HTTP Client Integration"]
+    end
+
+    subgraph "   "
+        UNIT1["🔸 Unit Tests"]
+        UNIT2["(10 tests)"]
+        UNIT3["Domain Services & Use Cases"]
+        UNIT4["Business Logic & Validation"]
+    end
+
+    E2E --> INT1
+    INT1 --> UNIT1
+
+
+    class E2E e2e
+    class INT1,INT2,INT3 integration
+    class UNIT1,UNIT2,UNIT3,UNIT4 unit
 ```
 
 ### **Coverage Report**
@@ -545,11 +558,11 @@ pyramid
 -----------------------------------|---------|----------|---------|---------|-----------
 File                               | % Stmts | % Branch | % Funcs | % Lines | Uncovered
 -----------------------------------|---------|----------|---------|---------|-----------
-All files                          |   82.6  |   42.85  |  81.81  |  83.02  |           
- Domain Services                   |   88.46 |   60     |  100    |  91.3   |           
- Application Use Cases             |   100   |   50     |  100    |  100    |           
- Infrastructure Services           |   74.28 |   46.66  |  72.72  |  74.28  |           
- Interface Controllers             |   75.86 |   10     |  100    |  75.86  |           
+All files                          |   82.6  |   42.85  |  81.81  |  83.02  |
+ Domain Services                   |   88.46 |   60     |  100    |  91.3   |
+ Application Use Cases             |   100   |   50     |  100    |  100    |
+ Infrastructure Services           |   74.28 |   46.66  |  72.72  |  74.28  |
+ Interface Controllers             |   75.86 |   10     |  100    |  75.86  |
 -----------------------------------|---------|----------|---------|---------|-----------
 ```
 
@@ -621,7 +634,7 @@ The API uses environment variables for configuration. Copy `.env.example` to `.e
 NODE_ENV=development          # development | production | test
 PORT=3000                     # Server port
 
-# Cache Configuration  
+# Cache Configuration
 CACHE_TTL_MS=300000          # Cache TTL in milliseconds (5 minutes)
 
 # Scraping Configuration
@@ -639,10 +652,10 @@ LOG_LEVEL=info              # error | warn | info | debug
 ### **🎛️ Configuration Matrix**
 
 | Environment | Cache TTL | Timeout | Retries | Log Level |
-|-------------|-----------|---------|---------|-----------|
-| Development | 30s | 10s | 3 | debug |
-| Testing | 1s | 5s | 1 | error |
-| Production | 5min | 10s | 3 | info |
+| ----------- | --------- | ------- | ------- | --------- |
+| Development | 30s       | 10s     | 3       | debug     |
+| Testing     | 1s        | 5s      | 1       | error     |
+| Production  | 5min      | 10s     | 3       | info      |
 
 ---
 
@@ -660,19 +673,19 @@ LOG_LEVEL=info              # error | warn | info | debug
 ```mermaid
 flowchart TD
     A[📥 Request] --> B{💾 Cache Hit?}
-    
+
     B -->|Yes 85%| C[⚡ Return Cached<br/>~50ms]
     B -->|No 15%| D[🌐 Scrape Fresh Data<br/>~2.5s]
-    
+
     D --> E[💾 Update Cache<br/>TTL: 5min]
     E --> F[📤 Return Fresh Data]
-    
+
     G[🔄 Background Process] --> H[🧹 Cache Cleanup<br/>Expired entries]
-    
+
     classDef fast fill:#2ECC71,stroke:#27AE60,stroke-width:2px
     classDef slow fill:#E74C3C,stroke:#C0392B,stroke-width:2px
     classDef process fill:#3498DB,stroke:#2980B9,stroke-width:2px
-    
+
     class C fast
     class D slow
     class E,F,H process
@@ -823,8 +836,6 @@ We use [Conventional Commits](https://www.conventionalcommits.org/):
 
 <div align="center">
 
-
-
 ![Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=felipesanchez-dev&repo=micafe-api&layout=compact&theme=tokyonight)
 
 </div>
@@ -845,8 +856,6 @@ We use [Conventional Commits](https://www.conventionalcommits.org/):
 - **Maintainability**: 9.2/10
 
 ---
-
-
 
 ## 🤔 FAQ
 
@@ -892,6 +901,7 @@ Please use our [GitHub Issues](https://github.com/felipesanchez-dev/micafe-api/i
 This project is licensed under the **Apache License 2.0** - see the [LICENSE](LICENSE) file for details.
 
 ### **License Summary**
+
 - ✅ **Commercial Use**: You can use this software commercially
 - ✅ **Modification**: You can modify the source code
 - ✅ **Distribution**: You can distribute the software
@@ -899,6 +909,7 @@ This project is licensed under the **Apache License 2.0** - see the [LICENSE](LI
 - ✅ **Private Use**: You can use this software privately
 
 **Required:**
+
 - 📄 **License Notice**: Include the license and copyright notice
 - 📄 **State Changes**: Document any changes made to the code
 
@@ -944,7 +955,7 @@ This project is licensed under the **Apache License 2.0** - see the [LICENSE](LI
 If you find MiCafe API useful, please consider:
 
 ⭐ **Star this repository**
-🐛 **Report bugs** 
+🐛 **Report bugs**
 💡 **Suggest features**
 🤝 **Contribute code**
 📢 **Share with others**
@@ -958,7 +969,6 @@ If you find MiCafe API useful, please consider:
 [![GitHub watchers](https://img.shields.io/github/watchers/felipesanchez-dev/micafe-api?style=social)](https://github.com/felipesanchez-dev/micafe-api)
 
 ---
-
 
 © 2025 Juan Felipe Reyes Sánchez. Licensed under Apache 2.0.
 
