@@ -2,7 +2,7 @@
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/felipesanchez-dev/micafe-api/refs/heads/main/src/image/logo-api.png" alt="MiCafe API Banner" width="100%"/>
+<img src="https://raw.githubusercontent.com/felipesanchez-dev/micafe-api/refs/heads/main/src/image/logo-api.png" alt="MiCafe API Banner" width="50%"/>
 
 [![Build Status](https://github.com/felipesanchez-dev/micafe-api/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/felipesanchez-dev/micafe-api/actions/workflows/ci-cd.yml)
 [![Coverage](https://img.shields.io/badge/coverage-82.6%25-brightgreen.svg)](https://github.com/felipesanchez-dev/micafe-api)
