@@ -23,11 +23,5 @@
     "RETRY_DELAY_MS": "1000",
     "FEDERACION_CAFETEROS_URL": "https://federaciondecafeteros.org",
     "LOG_LEVEL": "info"
-  },
-  "functions": {
-    "api/index.ts": {
-      "memory": 1024,
-      "maxDuration": 30
-    }
   }
 }
