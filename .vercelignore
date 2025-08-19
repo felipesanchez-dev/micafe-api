@@ -1,17 +1,36 @@
+# Dependencies
 node_modules
-src
+
+# Build output
+dist
+
+# Test and coverage
 coverage
+**/*.test.ts
+**/*.spec.ts
+src/__tests__
+
+# Git
 .git
 .gitignore
+
+# Environment
 .env.example
+
+# Documentation
 README.md
+
+# Configuration files that are not needed in production
 jest.config.js
 jest.config.fixed.js
-tsconfig.json
 .eslintrc.js
+
+# Docker
 docker-compose.yml
 Dockerfile
 nginx.conf
+
+# Legal files
 AUTHORS
 LICENSE
 NOTICE

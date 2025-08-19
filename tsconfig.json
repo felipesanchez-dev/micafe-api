@@ -9,12 +9,13 @@
     "strict": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "declaration": true,
+    "declaration": false,
     "outDir": "./dist",
     "rootDir": "./",
     "resolveJsonModule": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "sourceMap": false,
     "baseUrl": "./",
     "paths": {
       "@domain/*": ["src/domain/*"],
@@ -32,7 +33,13 @@
   "exclude": [
     "node_modules",
     "dist",
+    "coverage",
     "**/*.test.ts",
-    "**/*.spec.ts"
-  ]
+    "**/*.spec.ts",
+    "jest.config.js",
+    "jest.config.fixed.js"
+  ],
+  "ts-node": {
+    "esm": false
+  }
 }
