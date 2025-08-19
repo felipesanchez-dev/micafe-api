@@ -2,7 +2,6 @@
 
 <div align="center">
 
-<!-- Hero Banner -->
 <img src="https://raw.githubusercontent.com/felipesanchez-dev/micafe-api/main/docs/assets/hero-banner.png" alt="MiCafe API Banner" width="100%"/>
 
 [![Build Status](https://github.com/felipesanchez-dev/micafe-api/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/felipesanchez-dev/micafe-api/actions/workflows/ci-cd.yml)
@@ -14,9 +13,9 @@
 
 **Real-time Colombian Coffee Price API built with Clean Architecture**
 
-*Developed with ❤️ by [Juan Felipe Reyes Sánchez](https://github.com/felipesanchez-dev)*
+*Developed with by [Juan Felipe Reyes Sánchez](https://github.com/felipesanchez-dev)*
 
-[🚀 **Live Demo**](https://micafe-api.herokuapp.com) • [📖 **API Docs**](https://micafe-api.herokuapp.com/docs) • [🐛 **Report Bug**](https://github.com/felipesanchez-dev/micafe-api/issues) • [✨ **Request Feature**](https://github.com/felipesanchez-dev/micafe-api/issues)
+[🚀 **Live Demo**](#) • [📖 **API Docs**](#) • [🐛 **Report Bug**](https://github.com/felipesanchez-dev/micafe-api/issues) • [✨ **Request Feature**](https://github.com/felipesanchez-dev/micafe-api/issues)
 
 </div>
 
@@ -97,11 +96,6 @@ graph TB
     UC --> CACHE
     REPO --> EXT
     
-    classDef domain fill:#FFD700,stroke:#333,stroke-width:3px
-    classDef application fill:#87CEEB,stroke:#333,stroke-width:2px
-    classDef infrastructure fill:#98FB98,stroke:#333,stroke-width:2px
-    classDef interface fill:#DDA0DD,stroke:#333,stroke-width:2px
-    classDef external fill:#F0E68C,stroke:#333,stroke-width:1px
     
     class ENT,INT,ERR,VAL domain
     class UC,SRV application
