@@ -1,0 +1,285 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "MiCafe API",
+    "version": "1.0.0",
+    "description": "API para obtener indicadores del café de Colombia mediante scraping del sitio oficial de la Federación de Cafeteros",
+    "contact": {
+      "name": "Juan Felipe Reyes Sanchez",
+      "url": "https://github.com/felipesanchez-dev"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Development server"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Obtener información de la API",
+        "description": "Retorna metadatos sobre la API, incluyendo endpoints disponibles y configuración",
+        "responses": {
+          "200": {
+            "description": "Información de la API",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiMetadata"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Info"]
+      }
+    },
+    "/status": {
+      "get": {
+        "summary": "Obtener estado del servicio",
+        "description": "Retorna el estado de salud del servicio, uptime y estadísticas de caché",
+        "responses": {
+          "200": {
+            "description": "Estado del servicio",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceStatus"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Health"]
+      }
+    },
+    "/precio-hoy": {
+      "get": {
+        "summary": "Obtener precio actual del café",
+        "description": "Scrapea y retorna los indicadores actuales del café desde el sitio oficial de la Federación de Cafeteros",
+        "responses": {
+          "200": {
+            "description": "Precio del café obtenido exitosamente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    { "$ref": "#/components/schemas/SuccessResponse" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/CoffeePriceIndicator"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error en el scraping",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Error de red",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Coffee Price"]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApiMetadata": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string", "example": "MiCafe API" },
+          "version": { "type": "string", "example": "1.0.0" },
+          "description": {
+            "type": "string",
+            "example": "API para obtener indicadores del café de Colombia"
+          },
+          "author": {
+            "type": "string",
+            "example": "Juan Felipe Reyes Sanchez"
+          },
+          "github": {
+            "type": "string",
+            "example": "https://github.com/felipesanchez-dev"
+          },
+          "endpoints": {
+            "type": "object",
+            "additionalProperties": { "type": "string" }
+          },
+          "status": { "type": "string", "example": "online" },
+          "retrySystem": {
+            "type": "string",
+            "example": "Enabled (3 attempts)"
+          },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      },
+      "ServiceStatus": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "example": "healthy" },
+          "uptime": { "type": "number", "description": "Uptime en segundos" },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "version": { "type": "string", "example": "1.0.0" },
+          "lastScrapeAttempt": { "type": "string", "format": "date-time" },
+          "lastSuccessfulScrape": { "type": "string", "format": "date-time" },
+          "cacheStats": {
+            "type": "object",
+            "properties": {
+              "size": { "type": "number" },
+              "keys": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      },
+      "CoffeePriceIndicator": {
+        "type": "object",
+        "properties": {
+          "precioInternoReferencia": {
+            "type": "object",
+            "properties": {
+              "valor": { "type": "number", "example": 2780000 },
+              "moneda": { "type": "string", "example": "COP" },
+              "fecha": {
+                "type": "string",
+                "format": "date",
+                "example": "2025-08-18"
+              }
+            }
+          },
+          "bolsaNY": {
+            "type": "object",
+            "properties": {
+              "valor": { "type": "number", "example": 343.6 },
+              "unidad": { "type": "string", "example": "cents/lb" },
+              "fecha": {
+                "type": "string",
+                "format": "date",
+                "example": "2025-08-18"
+              }
+            }
+          },
+          "tasaCambio": {
+            "type": "object",
+            "properties": {
+              "valor": { "type": "number", "example": 4015 },
+              "moneda": { "type": "string", "example": "COP/USD" },
+              "fecha": {
+                "type": "string",
+                "format": "date",
+                "example": "2025-08-18"
+              }
+            }
+          },
+          "mecic": {
+            "type": "object",
+            "properties": {
+              "valor": { "type": "number", "example": 0 },
+              "fecha": {
+                "type": "string",
+                "format": "date",
+                "example": "2024-07-12"
+              }
+            }
+          },
+          "fuente": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "example": "https://federaciondecafeteros.org"
+              },
+              "pdfPrecio": {
+                "type": "string",
+                "format": "uri",
+                "example": "https://federaciondecafeteros.org/app/uploads/2019/10/precio_cafe.pdf"
+              }
+            }
+          }
+        }
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": true },
+          "message": {
+            "type": "string",
+            "example": "Precio obtenido exitosamente"
+          },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "version": { "type": "string", "example": "1.0.0" },
+          "author": {
+            "type": "string",
+            "example": "Juan Felipe Reyes Sanchez"
+          },
+          "github": {
+            "type": "string",
+            "example": "https://github.com/felipesanchez-dev"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean", "example": false },
+          "message": {
+            "type": "string",
+            "example": "No fue posible obtener el precio del café"
+          },
+          "error": {
+            "type": "object",
+            "properties": {
+              "code": { "type": "string", "example": "SCRAPE_FAILED" },
+              "detail": { "type": "string", "example": "Detalle del error" }
+            }
+          },
+          "timestamp": { "type": "string", "format": "date-time" },
+          "version": { "type": "string", "example": "1.0.0" },
+          "author": {
+            "type": "string",
+            "example": "Juan Felipe Reyes Sanchez"
+          },
+          "github": {
+            "type": "string",
+            "example": "https://github.com/felipesanchez-dev"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Info",
+      "description": "Información de la API"
+    },
+    {
+      "name": "Health",
+      "description": "Estado y salud del servicio"
+    },
+    {
+      "name": "Coffee Price",
+      "description": "Endpoints para obtener precios del café"
+    }
+  ]
+}
