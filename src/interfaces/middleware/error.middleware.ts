@@ -9,6 +9,7 @@ export class ErrorMiddleware {
     error: Error,
     req: Request,
     res: Response,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     next: NextFunction
   ): void => {
     this.logger.error("Unhandled error:", {

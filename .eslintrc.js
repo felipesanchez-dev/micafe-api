@@ -6,13 +6,16 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["@typescript-eslint/eslint-plugin"],
-  extends: ["@typescript-eslint/recommended"],
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   root: true,
   env: {
     node: true,
     jest: true,
   },
-  ignorePatterns: [".eslintrc.js"],
+  ignorePatterns: [".eslintrc.js", "**/*.test.ts", "**/*.spec.ts", "dist/**/*"],
   rules: {
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
