@@ -1,0 +1,9 @@
+MiCafe-API
+Copyright 2025 Juan Felipe Reyes Sanchez
+
+This product includes software developed by
+Juan Felipe Reyes Sanchez (https://github.com/felipesanchez-dev/micafe-api).
+
+The API has been designed with a clean architecture to provide
+Colombian coffee indicators by scraping data from the
+National Federation of Coffee Growers website.

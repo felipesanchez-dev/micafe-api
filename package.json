@@ -1,7 +1,7 @@
 {
   "name": "micafe-api",
   "version": "1.0.0",
-  "description": "API para obtener indicadores del café de Colombia",
+  "description": "API to fetch Colombian coffee indicators using clean architecture and web scraping",
   "main": "dist/index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
@@ -14,9 +14,24 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "docs": "swagger-ui-serve docs/swagger.json"
   },
-  "keywords": ["cafe", "colombia", "scraping", "api", "clean-architecture"],
-  "author": "Juan Felipe Reyes Sanchez",
-  "license": "MIT",
+  "keywords": [
+    "coffee",
+    "colombia",
+    "scraping",
+    "api",
+    "clean-architecture",
+    "micafe"
+  ],
+  "author": "Juan Felipe Reyes Sanchez <https://github.com/felipesanchez-dev>",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/felipesanchez-dev/micafe-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/felipesanchez-dev/micafe-api/issues"
+  },
+  "homepage": "https://github.com/felipesanchez-dev/micafe-api#readme",
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
