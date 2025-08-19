@@ -1,6 +1,8 @@
 import dotenv from "dotenv";
 
-dotenv.config();
+if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
+  dotenv.config();
+}
 
 export interface AppConfig {
   port: number;

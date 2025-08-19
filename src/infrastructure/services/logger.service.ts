@@ -5,16 +5,20 @@ export class PinoLogger implements Logger {
   private logger: pino.Logger;
 
   constructor(level: string = "info") {
+    const isProduction = process.env.NODE_ENV === "production";
+    
     this.logger = pino({
       level,
-      transport: {
-        target: "pino-pretty",
-        options: {
-          colorize: true,
-          translateTime: "UTC:yyyy-mm-dd HH:MM:ss.l",
-          ignore: "pid,hostname",
+      ...(isProduction ? {} : {
+        transport: {
+          target: "pino-pretty",
+          options: {
+            colorize: true,
+            translateTime: "UTC:yyyy-mm-dd HH:MM:ss.l",
+            ignore: "pid,hostname",
+          },
         },
-      },
+      }),
     });
   }
 
