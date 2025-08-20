@@ -37,24 +37,35 @@ export class FederacionCafeterosRepository implements CoffeePriceRepository {
 
     for (let attempt = 1; attempt <= this.maxRetries; attempt++) {
       try {
-        this.logger.info(`Scraping attempt ${attempt}/${this.maxRetries}`);
+        this.logger.logScrapingStatus?.("START", attempt, this.maxRetries);
 
         const response = await this.httpClient.get("/");
         const $ = cheerio.load(response.data);
+        const extractedData = this.extractCoffeePriceData($);
 
-        return this.extractCoffeePriceData($);
+        return extractedData;
       } catch (error) {
         lastError = error as Error;
-        this.logger.warn(`Attempt ${attempt} failed:`, error);
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
+
+        this.logger.logScrapingStatus?.(
+          "FAILED",
+          attempt,
+          this.maxRetries,
+          undefined,
+          errorMessage
+        );
 
         if (attempt < this.maxRetries) {
-          this.logger.info(`Waiting ${this.retryDelayMs}ms before retry...`);
           await this.delay(this.retryDelayMs);
         }
       }
     }
 
     if (lastError) {
+      const errorMessage = lastError.message;
+
       if (axios.isAxiosError(lastError)) {
         throw new NetworkError(
           `Network error after ${this.maxRetries} attempts`,
@@ -63,7 +74,7 @@ export class FederacionCafeterosRepository implements CoffeePriceRepository {
       }
       throw new ScrapingError(
         `Scraping failed after ${this.maxRetries} attempts`,
-        lastError.message
+        errorMessage
       );
     }
 

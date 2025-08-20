@@ -4,15 +4,18 @@ import helmet from "helmet";
 import { DependencyContainer } from "./shared/dependency-container";
 import { AppRoutes } from "./interfaces/routes/app.routes";
 import { CoffeePriceRoutes } from "./interfaces/routes/coffee-price.routes";
+import { RequestLoggerMiddleware } from "./interfaces/middleware/request-logger.middleware";
 import { config } from "./config/app.config";
 
 export class App {
   private app: Application;
   private container: DependencyContainer;
+  private requestLogger: RequestLoggerMiddleware;
 
   constructor() {
     this.app = express();
     this.container = DependencyContainer.getInstance();
+    this.requestLogger = new RequestLoggerMiddleware(this.container.logger);
     this.setupMiddleware();
     this.setupRoutes();
     this.setupErrorHandling();
@@ -25,13 +28,9 @@ export class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
 
-    this.app.use((req, res, next) => {
-      this.container.logger.info(`${req.method} ${req.path}`, {
-        ip: req.ip,
-        userAgent: req.get("User-Agent"),
-      });
-      next();
-    });
+    // Usar el nuevo middleware de logging estructurado
+    this.app.use(this.requestLogger.logIncoming);
+    this.app.use(this.requestLogger.logOutgoing);
   }
 
   private setupRoutes(): void {
@@ -52,14 +51,7 @@ export class App {
 
   public start(): void {
     this.app.listen(config.port, () => {
-      this.container.logger.info(
-        `🚀 MiCafe API server is running on port ${config.port}`
-      );
-      this.container.logger.info(`📱 Environment: ${config.nodeEnv}`);
-      this.container.logger.info(`🔄 Cache TTL: ${config.cacheTtlMs}ms`);
-      this.container.logger.info(
-        `🕸️  Scraping URL: ${config.federacionCafeterosUrl}`
-      );
+      this.container.logger.logStartup?.(config.port, config.nodeEnv);
     });
   }
 

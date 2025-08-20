@@ -18,18 +18,18 @@ export class GetCoffeePriceUseCase {
   ) {}
 
   async execute(): Promise<CoffeePriceIndicator> {
-    this.logger.info("Starting coffee price scraping process");
-
     const cachedData = this.cacheService.get<CoffeePriceIndicator>(
       this.CACHE_KEY
     );
     if (cachedData) {
-      this.logger.info("Returning cached coffee price data");
+      this.logger.logCacheOperation?.("HIT", this.CACHE_KEY);
       return cachedData;
     }
 
+    const startTime = Date.now();
     try {
-      this.logger.info("Cache miss, scraping fresh data");
+      this.logger.logCacheOperation?.("MISS", this.CACHE_KEY);
+
       const scrapedData = await this.coffeePriceRepository.scrapeCoffeePrice();
 
       const normalizedData =
@@ -37,10 +37,27 @@ export class GetCoffeePriceUseCase {
 
       this.cacheService.set(this.CACHE_KEY, normalizedData, this.cacheTtlMs);
 
-      this.logger.info("Successfully scraped and cached coffee price data");
+      const duration = Date.now() - startTime;
+      this.logger.logScrapingStatus?.(
+        "SUCCESS",
+        undefined,
+        undefined,
+        duration
+      );
+
       return normalizedData;
     } catch (error) {
-      this.logger.error("Failed to get coffee price", error);
+      const duration = Date.now() - startTime;
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      this.logger.logScrapingStatus?.(
+        "FAILED",
+        undefined,
+        undefined,
+        duration,
+        errorMessage
+      );
+
       throw new ScrapingError(
         "No fue posible obtener el precio del café",
         error instanceof Error ? error.message : String(error)

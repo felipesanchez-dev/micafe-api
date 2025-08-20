@@ -11,10 +11,12 @@ export class CoffeePriceController {
   ) {}
 
   async getCoffeePriceToday(req: Request, res: Response): Promise<void> {
-    try {
-      this.logger.info("GET /precio-hoy - Coffee price request received");
+    const startTime = Date.now();
+    const ip = (req as any).context?.ip || req.ip || "unknown";
 
+    try {
       const coffeePriceData = await this.getCoffeePriceUseCase.execute();
+      const duration = Date.now() - startTime;
 
       const response: ApiResponse = {
         success: true,
@@ -26,15 +28,28 @@ export class CoffeePriceController {
         github: "https://github.com/felipesanchez-dev",
       };
 
-      this.logger.info("GET /precio-hoy - Success response sent");
+      this.logger.logSuccess?.(
+        `Coffee price retrieved successfully | ${duration}ms`,
+        200,
+        ip
+      );
+
       res.status(200).json(response);
     } catch (error) {
-      this.logger.error("GET /precio-hoy - Error occurred:", error);
-
+      const duration = Date.now() - startTime;
       const isAppError = error instanceof AppError;
       const statusCode = isAppError ? error.statusCode : 500;
       const errorCode = isAppError ? error.code : "INTERNAL_ERROR";
       const errorDetail = isAppError ? error.detail : "Internal server error";
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+
+      this.logger.logError?.(
+        `Coffee price request failed | ${duration}ms`,
+        statusCode,
+        ip,
+        `${errorCode}: ${errorMessage}`
+      );
 
       const response: ApiResponse = {
         success: false,

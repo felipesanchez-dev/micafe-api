@@ -12,17 +12,26 @@ export class ErrorMiddleware {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     next: NextFunction
   ): void => {
-    const ip = (req as any).context?.ip || req.ip || "unknown";
-    const errorMessage = error.message;
+    const requestId = (req as any).requestId || "unknown";
+    const duration = Date.now() - ((req as any).startTime || 0);
+
+    this.logger.error("Unhandled server error occurred", {
+      operation: "UNHANDLED_ERROR",
+      requestId,
+      duration,
+      errorName: error.name,
+      errorMessage: error.message,
+      errorStack: error.stack,
+      path: req.path,
+      method: req.method,
+      ip: req.ip,
+      userAgent: req.get("User-Agent"),
+      body: req.body ? JSON.stringify(req.body).substring(0, 500) : undefined,
+      query: Object.keys(req.query).length > 0 ? req.query : undefined,
+      params: Object.keys(req.params).length > 0 ? req.params : undefined,
+    });
 
     if (error instanceof AppError) {
-      this.logger.logError?.(
-        `Server error: ${errorMessage}`,
-        error.statusCode,
-        ip,
-        `${error.code}: ${error.detail}`
-      );
-
       res.status(error.statusCode).json({
         success: false,
         message: error.message,
@@ -36,13 +45,6 @@ export class ErrorMiddleware {
         github: "https://github.com/felipesanchez-dev",
       });
     } else {
-      this.logger.logError?.(
-        `Unhandled server error: ${errorMessage}`,
-        500,
-        ip,
-        `INTERNAL_ERROR: ${errorMessage}`
-      );
-
       res.status(500).json({
         success: false,
         message: "Internal server error",
@@ -59,12 +61,19 @@ export class ErrorMiddleware {
   };
 
   notFound = (req: Request, res: Response): void => {
-    const ip = (req as any).context?.ip || req.ip || "unknown";
+    const requestId = (req as any).requestId || "unknown";
+    const duration = Date.now() - ((req as any).startTime || 0);
 
-    this.logger.logWarning?.(
-      `Endpoint not found: ${req.method} ${req.path}`,
-      ip
-    );
+    this.logger.warn("Endpoint not found - 404 error", {
+      operation: "NOT_FOUND_ERROR",
+      requestId,
+      duration,
+      path: req.path,
+      method: req.method,
+      ip: req.ip,
+      userAgent: req.get("User-Agent"),
+      query: Object.keys(req.query).length > 0 ? req.query : undefined,
+    });
 
     res.status(404).json({
       success: false,
