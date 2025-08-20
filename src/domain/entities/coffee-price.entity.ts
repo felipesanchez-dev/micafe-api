@@ -1,21 +1,21 @@
 export interface CoffeePriceIndicator {
   precioInternoReferencia: {
-    valor: number;
+    valor: string;
     moneda: string;
     fecha: string;
   };
   bolsaNY: {
-    valor: number;
+    valor: string;
     unidad: string;
     fecha: string;
   };
   tasaCambio: {
-    valor: number;
+    valor: string;
     moneda: string;
     fecha: string;
   };
   mecic: {
-    valor: number;
+    valor: string;
     fecha: string;
   };
   fuente: {
