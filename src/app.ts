@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 import cors from "cors";
 import helmet from "helmet";
+import path from "path";
 import { DependencyContainer } from "./shared/dependency-container";
 import { AppRoutes } from "./interfaces/routes/app.routes";
 import { CoffeePriceRoutes } from "./interfaces/routes/coffee-price.routes";
@@ -28,7 +29,17 @@ export class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
 
-    // Usar el nuevo middleware de logging estructurado
+    this.app.use(express.static(path.join(__dirname, "public")));
+
+    this.app.get("/favicon.ico", (req, res) => {
+      res.type("image/x-icon");
+      res.sendFile(path.join(__dirname, "public", "favicon.ico"));
+    });
+
+    this.app.get("/favicon.png", (req, res) => {
+      res.sendFile(path.join(__dirname, "image", "logo-api.png"));
+    });
+
     this.app.use(this.requestLogger.logIncoming);
     this.app.use(this.requestLogger.logOutgoing);
   }
