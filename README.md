@@ -879,51 +879,72 @@ We use [Conventional Commits](https://www.conventionalcommits.org/):
 
 ---
 
-## 📊 Project Statistics
+## 📊 Repository Statistics
 
 <div align="center">
 
-### **📈 Repository Statistics**
+### **📈 Real-Time Repository Metrics**
 
-![GitHub stars](https://img.shields.io/github/stars/felipesanchez-dev/micafe-api?style=for-the-badge&color=gold&labelColor=1e1e2e)
-![GitHub forks](https://img.shields.io/github/forks/felipesanchez-dev/micafe-api?style=for-the-badge&color=teal&labelColor=1e1e2e)
-![GitHub issues](https://img.shields.io/github/issues/felipesanchez-dev/micafe-api?style=for-the-badge&color=orange&labelColor=1e1e2e)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/felipesanchez-dev/micafe-api?style=for-the-badge&color=purple&labelColor=1e1e2e)
+![GitHub stars](https://img.shields.io/github/stars/felipesanchez-dev/micafe-api?style=for-the-badge&logo=github&color=gold&labelColor=1e1e2e&label=Stars)
+![GitHub forks](https://img.shields.io/github/forks/felipesanchez-dev/micafe-api?style=for-the-badge&logo=git&color=teal&labelColor=1e1e2e&label=Forks)
+![GitHub issues](https://img.shields.io/github/issues/felipesanchez-dev/micafe-api?style=for-the-badge&logo=github&color=orange&labelColor=1e1e2e&label=Issues)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/felipesanchez-dev/micafe-api?style=for-the-badge&logo=github&color=purple&labelColor=1e1e2e&label=Pull%20Requests)
 
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/felipesanchez-dev/micafe-api?style=for-the-badge&color=blue&labelColor=1e1e2e)
-![GitHub last commit](https://img.shields.io/github/last-commit/felipesanchez-dev/micafe-api?style=for-the-badge&color=green&labelColor=1e1e2e)
-![GitHub contributors](https://img.shields.io/github/contributors/felipesanchez-dev/micafe-api?style=for-the-badge&color=red&labelColor=1e1e2e)
-![GitHub watchers](https://img.shields.io/github/watchers/felipesanchez-dev/micafe-api?style=for-the-badge&color=pink&labelColor=1e1e2e)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/felipesanchez-dev/micafe-api?style=for-the-badge&logo=github&color=blue&labelColor=1e1e2e&label=Commits%2FMonth)
+![GitHub last commit](https://img.shields.io/github/last-commit/felipesanchez-dev/micafe-api?style=for-the-badge&logo=github&color=green&labelColor=1e1e2e&label=Last%20Commit)
+![GitHub contributors](https://img.shields.io/github/contributors/felipesanchez-dev/micafe-api?style=for-the-badge&logo=github&color=red&labelColor=1e1e2e&label=Contributors)
+![GitHub watchers](https://img.shields.io/github/watchers/felipesanchez-dev/micafe-api?style=for-the-badge&logo=github&color=pink&labelColor=1e1e2e&label=Watchers)
 
-### **🌐 Language Distribution**
+### **💻 Code Metrics**
 
-![GitHub top language](https://img.shields.io/github/languages/top/felipesanchez-dev/micafe-api?style=for-the-badge&color=blue&labelColor=1e1e2e)
-![TypeScript](https://img.shields.io/github/languages/count/felipesanchez-dev/micafe-api?style=for-the-badge&color=blue&labelColor=1e1e2e)
-![Code size](https://img.shields.io/github/languages/code-size/felipesanchez-dev/micafe-api?style=for-the-badge&color=lightblue&labelColor=1e1e2e)
-![Repo size](https://img.shields.io/github/repo-size/felipesanchez-dev/micafe-api?style=for-the-badge&color=yellow&labelColor=1e1e2e)
+![GitHub top language](https://img.shields.io/github/languages/top/felipesanchez-dev/micafe-api?style=for-the-badge&logo=typescript&color=3178c6&labelColor=1e1e2e)
+![Languages count](https://img.shields.io/github/languages/count/felipesanchez-dev/micafe-api?style=for-the-badge&logo=code&color=blue&labelColor=1e1e2e&label=Languages)
+![Code size](https://img.shields.io/github/languages/code-size/felipesanchez-dev/micafe-api?style=for-the-badge&logo=files&color=lightblue&labelColor=1e1e2e&label=Code%20Size)
+![Repo size](https://img.shields.io/github/repo-size/felipesanchez-dev/micafe-api?style=for-the-badge&logo=database&color=yellow&labelColor=1e1e2e&label=Repo%20Size)
 
-### **📊 Detailed Language Breakdown**
+### **📊 Repository Health & Activity**
 
-![Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=felipesanchez-dev&repo=micafe-api&layout=compact&theme=catppuccin_mocha&hide_border=true&card_width=500)
+![GitHub release](https://img.shields.io/github/v/release/felipesanchez-dev/micafe-api?style=for-the-badge&logo=rocket&color=success&labelColor=1e1e2e&label=Latest%20Release)
+![GitHub license](https://img.shields.io/github/license/felipesanchez-dev/micafe-api?style=for-the-badge&logo=law&color=blue&labelColor=1e1e2e&label=License)
+![GitHub downloads](https://img.shields.io/github/downloads/felipesanchez-dev/micafe-api/total?style=for-the-badge&logo=download&color=brightgreen&labelColor=1e1e2e&label=Downloads)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/w/felipesanchez-dev/micafe-api?style=for-the-badge&logo=activity&color=ff69b4&labelColor=1e1e2e&label=Weekly%20Activity)
 
-### **⭐ Repository Activity**
+### **📈 Live Repository Dashboard**
 
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=felipesanchez-dev&show_icons=true&theme=catppuccin_mocha&hide_border=true&include_all_commits=true&count_private=false&hide_title=false&card_width=500)
+![Repository Stats](https://github-readme-stats.vercel.app/api/pin/?username=felipesanchez-dev&repo=micafe-api&theme=catppuccin_mocha&hide_border=true&show_owner=true&card_width=500)
 
-### **🔥 Streak Statistics**
+### **🔥 Repository Activity Graph**
 
-![GitHub Streak](https://github-readme-streak-stats.herokuapp.com?user=felipesanchez-dev&theme=catppuccin-mocha&hide_border=true&card_width=500)
+![Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=felipesanchez-dev&repo=micafe-api&theme=react-dark&hide_border=true&title_color=58a6ff&color=79c0ff&line=1f6feb&point=f85149&area_color=0d1117&area=true&custom_title=MiCafe%20API%20Activity%20Graph)
+
+### **� Language Distribution**
+
+![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=felipesanchez-dev&repo=micafe-api&layout=compact&theme=catppuccin_mocha&hide_border=true&card_width=500&title_color=58a6ff)
 
 </div>
 
-### **📈 Development Metrics**
+### **📈 Development Metrics (Real-Time)**
 
-- **Lines of Code**: ~2,800+
-- **Test Coverage**: 82.6%
-- **Dependencies**: 15 production, 20 dev
-- **Bundle Size**: ~2.3MB (compiled)
-- **Docker Image**: ~98MB (compressed)
-- **API Response Time**: <100ms (cached), ~2s (fresh scraping)
+- **Repository Age**: ![GitHub Created At](https://img.shields.io/github/created-at/felipesanchez-dev/micafe-api?style=flat&logo=calendar&color=blue)
+- **Latest Release**: ![GitHub Release Date](https://img.shields.io/github/release-date/felipesanchez-dev/micafe-api?style=flat&logo=rocket&color=green)
+- **Total Commits**: ![GitHub commit activity](https://img.shields.io/github/commit-activity/t/felipesanchez-dev/micafe-api?style=flat&logo=git&color=orange)
+- **Open Issues**: ![GitHub issues](https://img.shields.io/github/issues-raw/felipesanchez-dev/micafe-api?style=flat&logo=github&color=red)
+- **Closed Issues**: ![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/felipesanchez-dev/micafe-api?style=flat&logo=github&color=green)
+- **Pull Requests**: ![GitHub pull requests](https://img.shields.io/github/issues-pr/felipesanchez-dev/micafe-api?style=flat&logo=github&color=purple)
+
+### **💾 Repository Size & Complexity**
+
+- **Lines of Code**: ![Lines of code](https://img.shields.io/tokei/lines/github/felipesanchez-dev/micafe-api?style=flat&logo=code&color=blue)
+- **Repository Size**: ![GitHub repo size](https://img.shields.io/github/repo-size/felipesanchez-dev/micafe-api?style=flat&logo=database&color=yellow)
+- **Code Size**: ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/felipesanchez-dev/micafe-api?style=flat&logo=files&color=lightblue)
+- **Dependencies**: ![Dependencies](https://img.shields.io/librariesio/github/felipesanchez-dev/micafe-api?style=flat&logo=npm&color=red)
+
+### **🏆 Community & Engagement**
+
+- **Stars History**: ⭐ Track repository growth over time
+- **Fork Network**: 🔀 Active community contributions
+- **Watch Activity**: 👀 Developer interest and monitoring
+- **Download Stats**: 📥 Package usage and adoption
 
 ### **🏆 Quality Metrics**
 
@@ -933,22 +954,22 @@ We use [Conventional Commits](https://www.conventionalcommits.org/):
 - **Maintainability**: 9.5/10 (Clean Architecture)
 - **Reliability**: 99.9% uptime (Vercel edge functions)
 
-### **🌍 Live API Metrics**
+### **🌍 Live API & Repository Health**
 
 <div align="center">
 
 [![API Status](https://img.shields.io/website?url=https%3A%2F%2Fmicafe-api.vercel.app&style=for-the-badge&logo=vercel&logoColor=white&label=API%20Status)](https://micafe-api.vercel.app)
-[![Response Time](https://img.shields.io/badge/Response%20Time-~2s-brightgreen?style=for-the-badge&logo=speedtest&logoColor=white)](https://micafe-api.vercel.app/precio-hoy)
-[![Uptime](https://img.shields.io/badge/Uptime-99.9%25-success?style=for-the-badge&logo=statuspage&logoColor=white)](https://micafe-api.vercel.app/status)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/felipesanchez-dev/micafe-api/ci.yml?style=for-the-badge&logo=github-actions&logoColor=white&label=Build)](https://github.com/felipesanchez-dev/micafe-api/actions)
+[![Deployment](https://img.shields.io/github/deployments/felipesanchez-dev/micafe-api/Production?style=for-the-badge&logo=vercel&logoColor=white&label=Deployment)](https://github.com/felipesanchez-dev/micafe-api/deployments)
 
 </div>
 
-### **🏆 Quality Metrics**
+### **🏆 Repository Quality Metrics**
 
-- **Code Quality**: A+ (SonarQube)
-- **Security**: No known vulnerabilities
-- **Performance**: 95/100 (Lighthouse)
-- **Maintainability**: 9.2/10
+- **Code Quality**: ![Codacy grade](https://img.shields.io/codacy/grade/[PROJECT_ID]?style=flat&logo=codacy&color=green)
+- **Security**: ![Snyk Vulnerabilities](https://img.shields.io/snyk/vulnerabilities/github/felipesanchez-dev/micafe-api?style=flat&logo=snyk&color=green)
+- **Dependencies**: ![Dependencies Status](https://img.shields.io/librariesio/github/felipesanchez-dev/micafe-api?style=flat&logo=libraries&color=blue)
+- **Test Coverage**: ![Coverage](https://img.shields.io/badge/coverage-82.6%25-brightgreen.svg?style=flat&logo=jest)
 
 ---
 
@@ -1072,11 +1093,22 @@ If you find MiCafe API useful, please consider:
 
 ---
 
-### **🎯 Connect & Stay Updated**
+### **🎯 Live Repository Statistics**
 
-[![GitHub followers](https://img.shields.io/github/followers/felipesanchez-dev?style=social)](https://github.com/felipesanchez-dev)
-[![GitHub stars](https://img.shields.io/github/stars/felipesanchez-dev/micafe-api?style=social)](https://github.com/felipesanchez-dev/micafe-api)
-[![GitHub watchers](https://img.shields.io/github/watchers/felipesanchez-dev/micafe-api?style=social)](https://github.com/felipesanchez-dev/micafe-api)
+[![GitHub stars](https://img.shields.io/github/stars/felipesanchez-dev/micafe-api?style=social&logo=github)](https://github.com/felipesanchez-dev/micafe-api/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/felipesanchez-dev/micafe-api?style=social&logo=github)](https://github.com/felipesanchez-dev/micafe-api/network/members)
+[![GitHub watchers](https://img.shields.io/github/watchers/felipesanchez-dev/micafe-api?style=social&logo=github)](https://github.com/felipesanchez-dev/micafe-api/watchers)
+[![GitHub issues](https://img.shields.io/github/issues/felipesanchez-dev/micafe-api?style=social&logo=github)](https://github.com/felipesanchez-dev/micafe-api/issues)
+
+### **📊 Repository Insights Dashboard**
+
+<div align="center">
+
+![Repository Insights](https://repobeats.axiom.co/api/embed/[REPO_ID].svg "MiCafe API Repository Analytics")
+
+*Real-time repository analytics updated automatically*
+
+</div>
 
 ---
 
