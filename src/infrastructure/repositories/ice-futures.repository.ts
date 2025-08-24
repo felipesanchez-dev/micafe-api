@@ -1,3 +1,5 @@
+import * as cheerio from "cheerio";
+import * as puppeteer from "puppeteer";
 import {
   IceFuturesHistory,
   IceFuturesData,
@@ -6,14 +8,14 @@ import { ScrapingError } from "../../domain/errors/app.errors";
 import { Logger } from "../../domain/interfaces/services.interface";
 
 export interface IceFuturesRepository {
-  getIceFuturesData(
-    timeRange: "1M" | "3M" | "6M" | "1Y"
-  ): Promise<IceFuturesHistory>;
+  getIceFuturesData(timeRange: "1Y"): Promise<IceFuturesHistory>;
 }
 
 export class IceFuturesRepositoryImpl implements IceFuturesRepository {
   private readonly baseUrl =
     "https://www.ice.com/products/15/Coffee-C-Futures/data";
+  private readonly timeout = 15000;
+  private readonly maxRetries = 3;
 
   constructor(private readonly logger: Logger) {}
 
@@ -66,15 +68,220 @@ export class IceFuturesRepositoryImpl implements IceFuturesRepository {
     };
   }
 
-  async getIceFuturesData(
-    timeRange: "1M" | "3M" | "6M" | "1Y"
-  ): Promise<IceFuturesHistory> {
+  private async fetchPageWithRetry(
+    url: string,
+    retries: number = 0
+  ): Promise<string> {
+    let browser = null;
+    try {
+      this.logger.info(
+        `Fetching ICE data with Puppeteer from: ${url} (attempt ${
+          retries + 1
+        }/${this.maxRetries})`
+      );
+
+      browser = await puppeteer.launch({
+        headless: true,
+        args: [
+          "--no-sandbox",
+          "--disable-setuid-sandbox",
+          "--disable-dev-shm-usage",
+        ],
+      });
+
+      const page = await browser.newPage();
+
+      await page.setUserAgent(
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+      );
+
+      await page.setViewport({ width: 1366, height: 768 });
+
+      await page.goto(url, {
+        waitUntil: "networkidle2",
+        timeout: this.timeout,
+      });
+
+      await page.waitForSelector(".table-bigdata, table", { timeout: 10000 });
+
+      const html = await page.content();
+
+      await browser.close();
+      return html;
+    } catch (error) {
+      if (browser) {
+        await browser.close();
+      }
+
+      if (retries < this.maxRetries - 1) {
+        const delay = Math.pow(2, retries) * 1000;
+        this.logger.info(`Request failed, retrying in ${delay}ms...`);
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        return this.fetchPageWithRetry(url, retries + 1);
+      }
+      throw error;
+    }
+  }
+
+  private parseContractDate(contract: string): {
+    month: string;
+    year: number;
+    timestamp: number;
+  } {
+    const monthMap: { [key: string]: number } = {
+      Jan: 0,
+      Feb: 1,
+      Mar: 2,
+      Apr: 3,
+      May: 4,
+      Jun: 5,
+      Jul: 6,
+      Aug: 7,
+      Sep: 8,
+      Oct: 9,
+      Nov: 10,
+      Dec: 11,
+    };
+
+    const monthStr = contract.substring(0, 3);
+    const yearStr = contract.substring(3);
+    const year = 2000 + parseInt(yearStr);
+    const month = monthMap[monthStr];
+
+    if (month === undefined) {
+      throw new Error(`Invalid contract month: ${monthStr}`);
+    }
+
+    const date = new Date(year, month, 1);
+
+    return {
+      month: monthStr,
+      year: year,
+      timestamp: date.getTime(),
+    };
+  }
+
+  private parseTableData(html: string): IceFuturesData[] {
+    const $ = cheerio.load(html);
+    const data: IceFuturesData[] = [];
+
+    this.logger.info("Parsing ICE futures table data...");
+
+    const table = $(".table-bigdata");
+    if (table.length === 0) {
+      throw new Error("No se encontró la tabla de datos de ICE");
+    }
+
+    table.find("tbody tr").each((index, row) => {
+      try {
+        const $row = $(row);
+
+        const contractCell = $row.find("td").eq(0);
+        const lastCell = $row.find("td").eq(1);
+        const timeCell = $row.find("td").eq(2);
+        const changeCell = $row.find("td").eq(3);
+        const volumeCell = $row.find("td").eq(4);
+
+        const contractText = contractCell.text().trim();
+        const contractMatch = contractText.match(/([A-Za-z]{3}\d{2})/);
+        if (!contractMatch) {
+          this.logger.info(
+            `Skipping row with invalid contract: ${contractText}`
+          );
+          return;
+        }
+        const contract = contractMatch[1];
+
+        const priceText = lastCell.text().trim();
+        const price = parseFloat(priceText);
+        if (isNaN(price)) {
+          this.logger.info(`Skipping row with invalid price: ${priceText}`);
+          return;
+        }
+
+        const timeText = timeCell.find("span").text().trim();
+        let dateStr = "";
+        let timeStr = "";
+
+        if (timeText) {
+          const timeMatch = timeText.match(
+            /(\d{1,2}\/\d{1,2}\/\d{4})\s*(\d{1,2}:\d{2}\s*[AP]M)/
+          );
+          if (timeMatch) {
+            dateStr = timeMatch[1];
+            timeStr = timeMatch[2];
+          } else {
+            dateStr = new Date().toISOString().split("T")[0];
+            timeStr = timeText;
+          }
+        }
+
+        const changeText = changeCell.text().trim();
+        const changePercent = parseFloat(changeText);
+
+        const volumeText = volumeCell.text().trim();
+        const volume = parseInt(volumeText.replace(/,/g, "")) || 0;
+
+        const contractInfo = this.parseContractDate(contract);
+
+        const futuresData: IceFuturesData = {
+          date: dateStr || new Date().toISOString().split("T")[0],
+          time: timeStr || new Date().toTimeString().split(" ")[0],
+          price: price,
+          change: 0,
+          changePercent: isNaN(changePercent) ? 0 : changePercent,
+          volume: volume,
+          openInterest: 0,
+          high: price,
+          low: price,
+          settlement: price,
+          timestamp: contractInfo.timestamp,
+          contract: contract,
+          contractMonth: contractInfo.month,
+          contractYear: contractInfo.year,
+        } as IceFuturesData;
+
+        data.push(futuresData);
+
+        this.logger.info(
+          `Parsed data point: ${contract} @ ${price} (${changePercent}% change, ${volume} volume)`
+        );
+      } catch (error) {
+        this.logger.info(
+          `Error parsing table row ${index}: ${
+            error instanceof Error ? error.message : String(error)
+          }`
+        );
+      }
+    });
+
+    data.sort((a, b) => a.timestamp - b.timestamp);
+
+    for (let i = 1; i < data.length; i++) {
+      const current = data[i];
+      const previous = data[i - 1];
+      current.change = Number((current.price - previous.price).toFixed(3));
+    }
+
+    this.logger.info(
+      `Successfully parsed ${data.length} data points from ICE table`
+    );
+
+    return data;
+  }
+
+  async getIceFuturesData(timeRange: "1Y"): Promise<IceFuturesHistory> {
     const startTime = Date.now();
 
     try {
       this.logger.info(`Starting ICE futures scraping for ${timeRange} range`);
 
-      const simulatedData = this.generateRealisticData(timeRange);
+      const html = await this.fetchPageWithRetry(this.baseUrl);
+      const scrapedData = this.parseTableData(html);
+
+      if (scrapedData.length === 0) {
+        throw new Error("No se pudieron extraer datos de la página de ICE");
+      }
 
       const result: IceFuturesHistory = {
         symbol: "KC",
@@ -82,10 +289,10 @@ export class IceFuturesRepositoryImpl implements IceFuturesRepository {
         exchange: "ICE",
         currency: "USD",
         lastUpdate: new Date().toISOString(),
-        dataPoints: simulatedData.length,
+        dataPoints: scrapedData.length,
         timeRange,
-        data: simulatedData,
-        statistics: this.calculateStatistics(simulatedData),
+        data: scrapedData,
+        statistics: this.calculateStatistics(scrapedData),
         source: {
           url: this.baseUrl,
           scrapeTime: new Date().toISOString(),
@@ -94,88 +301,23 @@ export class IceFuturesRepositoryImpl implements IceFuturesRepository {
 
       const duration = Date.now() - startTime;
       this.logger.info(
-        `ICE futures data generated successfully in ${duration}ms. Generated ${simulatedData.length} data points.`
+        `ICE futures data scraped successfully in ${duration}ms. Found ${scrapedData.length} data points.`
       );
 
       return result;
     } catch (error) {
       const duration = Date.now() - startTime;
       this.logger.logError?.(
-        `ICE futures data generation failed after ${duration}ms`,
+        `ICE futures scraping failed after ${duration}ms`,
         500,
         "system",
         error instanceof Error ? error.message : String(error)
       );
 
       throw new ScrapingError(
-        "Error al generar datos de estadísticas de ICE",
+        "Error al hacer scraping de datos de ICE Futures",
         error instanceof Error ? error.message : String(error)
       );
-    }
-  }
-
-  private generateRealisticData(timeRange: string): IceFuturesData[] {
-    const daysToGenerate = this.getDaysForTimeRange(timeRange);
-    const data: IceFuturesData[] = [];
-    const now = new Date();
-
-    let basePrice = 150 + Math.random() * 50;
-
-    for (let i = 0; i < daysToGenerate; i++) {
-      const date = new Date(now);
-      date.setDate(date.getDate() - (daysToGenerate - i));
-
-      const volatility = 0.03;
-      const priceChange = (Math.random() - 0.5) * 2 * volatility;
-      basePrice = Math.max(50, basePrice * (1 + priceChange));
-
-      const high = basePrice * (1 + Math.random() * 0.02);
-      const low = basePrice * (1 - Math.random() * 0.02);
-      const volume = Math.floor(Math.random() * 15000) + 5000;
-      const openInterest = Math.floor(Math.random() * 100000) + 50000;
-
-      data.push({
-        date: date.toISOString().split("T")[0],
-        time: `${String(9 + Math.floor(Math.random() * 8)).padStart(
-          2,
-          "0"
-        )}:${String(Math.floor(Math.random() * 60)).padStart(2, "0")}:00`,
-        price: Number(basePrice.toFixed(2)),
-        change: Number(
-          (basePrice - (data[i - 1]?.price || basePrice)).toFixed(2)
-        ),
-        changePercent: data[i - 1]
-          ? Number(
-              (
-                ((basePrice - data[i - 1].price) / data[i - 1].price) *
-                100
-              ).toFixed(2)
-            )
-          : 0,
-        volume: volume,
-        openInterest: openInterest,
-        high: Number(high.toFixed(2)),
-        low: Number(low.toFixed(2)),
-        settlement: Number(basePrice.toFixed(2)),
-        timestamp: date.getTime(),
-      });
-    }
-
-    return data.sort((a, b) => a.timestamp - b.timestamp);
-  }
-
-  private getDaysForTimeRange(timeRange: string): number {
-    switch (timeRange) {
-      case "1M":
-        return 30;
-      case "3M":
-        return 90;
-      case "6M":
-        return 180;
-      case "1Y":
-        return 250;
-      default:
-        return 30;
     }
   }
 }

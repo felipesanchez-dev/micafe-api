@@ -36,10 +36,12 @@
   },
   "homepage": "https://github.com/felipesanchez-dev/micafe-api#readme",
   "devDependencies": {
+    "@types/cheerio": "^0.22.35",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.12.7",
+    "@types/puppeteer": "^5.4.7",
     "@types/supertest": "^6.0.2",
     "@types/swagger-ui-express": "^4.1.6",
     "@typescript-eslint/eslint-plugin": "^7.7.1",
@@ -56,13 +58,14 @@
   },
   "dependencies": {
     "@vercel/node": "^5.3.13",
-    "axios": "^1.6.8",
-    "cheerio": "^1.0.0-rc.12",
+    "axios": "^1.11.0",
+    "cheerio": "^1.1.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "helmet": "^7.1.0",
     "pino": "^9.0.0",
+    "puppeteer": "^24.17.0",
     "swagger-ui-express": "^5.0.0"
   }
 }

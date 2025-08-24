@@ -19,9 +19,7 @@ export class GetLiveStatisticsUseCase {
     private readonly cacheTtlMs: number = 600000
   ) {}
 
-  async execute(
-    timeRange: "1M" | "3M" | "6M" | "1Y" = "1M"
-  ): Promise<IceFuturesHistory> {
+  async execute(timeRange: "1Y" = "1Y"): Promise<IceFuturesHistory> {
     this.validateTimeRange(timeRange);
 
     const cacheKey = `${this.CACHE_KEY_PREFIX}${timeRange}`;
@@ -86,7 +84,7 @@ export class GetLiveStatisticsUseCase {
   }
 
   private validateTimeRange(timeRange: string): void {
-    const validRanges = ["1M", "3M", "6M", "1Y"];
+    const validRanges = ["1Y"];
     if (!validRanges.includes(timeRange)) {
       throw new ValidationError(
         `Rango de tiempo inválido: ${timeRange}`,
@@ -121,16 +119,10 @@ export class GetLiveStatisticsUseCase {
 
   private getMinDataPointsForRange(timeRange: string): number {
     switch (timeRange) {
-      case "1M":
-        return 20;
-      case "3M":
-        return 60;
-      case "6M":
-        return 120;
       case "1Y":
-        return 200;
+        return 5;
       default:
-        return 20;
+        return 5;
     }
   }
 

@@ -13,7 +13,7 @@ export class LiveStatisticsController {
   async getLiveStatistics(req: Request, res: Response): Promise<void> {
     const startTime = Date.now();
     const ip = (req as any).context?.ip || req.ip || "unknown";
-    const timeRange = (req.query.range as "1M" | "3M" | "6M" | "1Y") || "1M";
+    const timeRange = (req.query.range as "1Y") || "1Y";
 
     try {
       this.logger.logRequest?.(

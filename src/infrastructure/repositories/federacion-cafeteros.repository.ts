@@ -40,7 +40,7 @@ export class FederacionCafeterosRepository implements CoffeePriceRepository {
         this.logger.logScrapingStatus?.("START", attempt, this.maxRetries);
 
         const response = await this.httpClient.get("/");
-        const $ = cheerio.load(response.data);
+        const $ = cheerio.load(response.data) as cheerio.CheerioAPI;
         const extractedData = this.extractCoffeePriceData($);
 
         return extractedData;
