@@ -5,6 +5,8 @@ export interface ApiResponse<T = any> {
   error?: {
     code: string;
     detail?: string;
+    requestId?: string;
+    suggestions?: string[];
   };
   timestamp: string;
   version: string;

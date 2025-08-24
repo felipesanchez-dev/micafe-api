@@ -2,9 +2,16 @@ import {
   CoffeePriceIndicator,
   ScrapedData,
 } from "../entities/coffee-price.entity";
+import { IceFuturesHistory } from "../entities/ice-futures.entity";
 
 export interface CoffeePriceRepository {
   scrapeCoffeePrice(): Promise<ScrapedData>;
+}
+
+export interface IceFuturesRepository {
+  getIceFuturesData(
+    timeRange: "1M" | "3M" | "6M" | "1Y"
+  ): Promise<IceFuturesHistory>;
 }
 
 export interface CoffeePriceService {

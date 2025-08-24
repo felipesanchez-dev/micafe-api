@@ -5,6 +5,7 @@ import path from "path";
 import { DependencyContainer } from "./shared/dependency-container";
 import { AppRoutes } from "./interfaces/routes/app.routes";
 import { CoffeePriceRoutes } from "./interfaces/routes/coffee-price.routes";
+import { LiveStatisticsRoutes } from "./interfaces/routes/live-statistics.routes";
 import { RequestLoggerMiddleware } from "./interfaces/middleware/request-logger.middleware";
 import { config } from "./config/app.config";
 
@@ -52,6 +53,11 @@ export class App {
       this.container.coffeePriceController
     );
     this.app.use("/", coffeePriceRoutes.getRoutes());
+
+    const liveStatisticsRoutes = new LiveStatisticsRoutes(
+      this.container.liveStatisticsController
+    );
+    this.app.use("/", liveStatisticsRoutes.getRoutes());
   }
 
   private setupErrorHandling(): void {
